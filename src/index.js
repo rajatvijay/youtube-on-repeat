@@ -3,19 +3,19 @@ import { render } from "react-dom";
 import SearchBar from "./components/searchBar";
 import Player from "./components/player";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import { searchVideos } from "./youtube";
+import { initializeSearchAPI, searchVideos } from "./youtube";
+import logger from "./logger";
 
 const DEFAULT_VIDEO = "https://www.youtube.com/embed/YuXLN23ZGQo";
 
-// const styles = {
-//   fontFamily: "sans-serif",
-//   textAlign: "center"
-// };
+// Logger
+const { iframeAPILogger } = logger;
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.init();
+    initializeSearchAPI();
     this.currentVideoPlaying = false;
     this.state = {
       lastSearchResult: [],
@@ -24,9 +24,9 @@ class App extends React.Component {
       autoPlayVideo: false
     };
 
-    console.log("creating on ready fun for youtube API".toUpperCase());
+    iframeAPILogger.log("creating on ready fun for youtube API".toUpperCase());
     window["onYouTubeIframeAPIReady"] = e => {
-      console.log("youtube API loaded, setting it true".toUpperCase());
+      iframeAPILogger.log("youtube API loaded, setting it true".toUpperCase());
       this.setState({
         youtubeApiLoaded: true
       });
@@ -35,8 +35,8 @@ class App extends React.Component {
 
   componentDidMount() {
     setTimeout(() => {
-      console.log("changing video".toUpperCase());
-      console.log(
+      iframeAPILogger.log("changing video".toUpperCase());
+      iframeAPILogger.log(
         `old video waswas playing ${this.currentVideoPlaying}`.toUpperCase()
       );
       this.setState({
@@ -47,7 +47,7 @@ class App extends React.Component {
   }
 
   startSearching = searchText => {
-    console.log(searchText);
+    iframeAPILogger.log(searchText);
     const videos = searchVideos(searchText);
     this.setState({
       lastSearchResult: videos
@@ -76,7 +76,7 @@ class App extends React.Component {
   }
 
   init() {
-    console.log("loading youtube API".toUpperCase());
+    iframeAPILogger.log("loading youtube API".toUpperCase());
     var tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
     tag.async = 1;

@@ -1,17 +1,20 @@
 import React from "react";
+import logger from "../logger";
+
+const { iframeAPILogger } = logger;
 
 class Player extends React.Component {
   componentDidUpdate() {
-    console.log("calling component did update".toUpperCase());
+    iframeAPILogger.log("calling component did update".toUpperCase());
     if (this.props.youtubeApiLoaded) {
-      console.log("creating player instance".toUpperCase());
+      iframeAPILogger.log("creating player instance".toUpperCase());
       this.player = new window["YT"].Player("player", {
         events: {
           onStateChange: this.onPlayerStateChange.bind(this),
           onReady: e => {
-            console.log("player ready for events".toUpperCase());
+            iframeAPILogger.log("player ready for events".toUpperCase());
             if (this.props.autoPlayVideo) {
-              console.log(
+              iframeAPILogger.log(
                 "previous video was playing so playing this video also".toUpperCase()
               );
               this.player.playVideo();
@@ -20,7 +23,7 @@ class Player extends React.Component {
         }
       });
     } else {
-      console.log("youtube API not loaded".toUpperCase());
+      iframeAPILogger.log("youtube API not loaded".toUpperCase());
     }
   }
 
@@ -41,10 +44,10 @@ class Player extends React.Component {
 
   onPlayerStateChange(event) {
     if (event.data === window["YT"].PlayerState.ENDED) {
-      console.log("video ended re-playing".toUpperCase());
+      iframeAPILogger.log("video ended re-playing".toUpperCase());
       this.player.playVideo();
     } else if (event.data === window["YT"].PlayerState.PLAYING) {
-      console.log("playing the current vide".toUpperCase());
+      iframeAPILogger.log("playing the current vide".toUpperCase());
       this.props.onVideoPlayed();
     }
   }
