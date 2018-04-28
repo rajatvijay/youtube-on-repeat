@@ -1,28 +1,26 @@
 import React from "react";
 
 class Player extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  // }
-
   componentDidUpdate() {
-    console.log("calling did update");
+    console.log("calling component did update".toUpperCase());
     if (this.props.youtubeApiLoaded) {
-      console.log("calling fn");
-      // this.YT = window["YT"];
+      console.log("creating player instance".toUpperCase());
       this.player = new window["YT"].Player("player", {
         events: {
           onStateChange: this.onPlayerStateChange.bind(this),
           onReady: e => {
-            console.log("ready");
+            console.log("player ready for events".toUpperCase());
             if (this.props.autoPlayVideo) {
+              console.log(
+                "previous video was playing so playing this video also".toUpperCase()
+              );
               this.player.playVideo();
             }
           }
         }
       });
     } else {
-      console.log("youtube API no loaded");
+      console.log("youtube API not loaded".toUpperCase());
     }
   }
 
@@ -42,10 +40,12 @@ class Player extends React.Component {
   }
 
   onPlayerStateChange(event) {
-    console.log(event);
     if (event.data === window["YT"].PlayerState.ENDED) {
-      console.log("ended ");
+      console.log("video ended re-playing".toUpperCase());
       this.player.playVideo();
+    } else if (event.data === window["YT"].PlayerState.PLAYING) {
+      console.log("playing the current vide".toUpperCase());
+      this.props.onVideoPlayed();
     }
   }
 }

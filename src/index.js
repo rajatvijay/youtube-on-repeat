@@ -16,6 +16,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.init();
+    this.currentVideoPlaying = false;
     this.state = {
       lastSearchResult: [],
       currentVideo: DEFAULT_VIDEO,
@@ -23,9 +24,9 @@ class App extends React.Component {
       autoPlayVideo: false
     };
 
-    console.log("creating fn");
+    console.log("creating on ready fun for youtube API".toUpperCase());
     window["onYouTubeIframeAPIReady"] = e => {
-      console.log("setting true");
+      console.log("youtube API loaded, setting it true".toUpperCase());
       this.setState({
         youtubeApiLoaded: true
       });
@@ -34,10 +35,13 @@ class App extends React.Component {
 
   componentDidMount() {
     setTimeout(() => {
-      console.log("changing video");
+      console.log("changing video".toUpperCase());
+      console.log(
+        `old video waswas playing ${this.currentVideoPlaying}`.toUpperCase()
+      );
       this.setState({
         currentVideo: "https://www.youtube.com/embed/8367ETnagHo",
-        autoPlayVideo: true
+        autoPlayVideo: this.currentVideoPlaying
       });
     }, 10000);
   }
@@ -50,6 +54,10 @@ class App extends React.Component {
     });
   };
 
+  onVideoPlayed = () => {
+    this.currentVideoPlaying = true;
+  };
+
   render() {
     const { currentVideo, youtubeApiLoaded, autoPlayVideo } = this.state;
     return (
@@ -60,6 +68,7 @@ class App extends React.Component {
             source={currentVideo}
             youtubeApiLoaded={youtubeApiLoaded}
             autoPlayVideo={autoPlayVideo}
+            onVideoPlayed={this.onVideoPlayed}
           />
         </MuiThemeProvider>
       </div>
@@ -67,6 +76,7 @@ class App extends React.Component {
   }
 
   init() {
+    console.log("loading youtube API".toUpperCase());
     var tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
     tag.async = 1;
