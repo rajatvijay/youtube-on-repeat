@@ -3,7 +3,12 @@ import { render } from "react-dom";
 import SearchBar from "./components/searchBar";
 import Player from "./components/player";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import { initializeSearchAPI, searchVideos, OAUTH2_CLIENT_ID } from "./youtube";
+import {
+  initializeSearchAPI,
+  initializeIframAPI,
+  searchVideos,
+  OAUTH2_CLIENT_ID
+} from "./youtube";
 import logger from "./logger";
 
 const DEFAULT_VIDEO = "https://www.youtube.com/embed/YuXLN23ZGQo";
@@ -14,7 +19,8 @@ const { iframeAPILogger, searchAPILogger } = logger;
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.init();
+
+    initializeIframAPI();
     initializeSearchAPI();
     this.currentVideoPlaying = false;
     this.state = {
@@ -94,14 +100,6 @@ class App extends React.Component {
         </MuiThemeProvider>
       </div>
     );
-  }
-
-  init() {
-    iframeAPILogger.log("loading youtube API".toUpperCase());
-    var tag = document.createElement("script");
-    tag.src = "https://www.youtube.com/iframe_api";
-    tag.async = 1;
-    document.head.appendChild(tag);
   }
 }
 
