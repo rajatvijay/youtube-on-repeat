@@ -16,22 +16,30 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.init();
-    this.state = { lastSearchResult: [], currentVideo: DEFAULT_VIDEO };
+    this.state = {
+      lastSearchResult: [],
+      currentVideo: DEFAULT_VIDEO,
+      youtubeApiLoaded: false,
+      autoPlayVideo: false
+    };
 
     console.log("creating fn");
     window["onYouTubeIframeAPIReady"] = e => {
-      console.log("calling fn");
-      this.YT = window["YT"];
-      this.player = new window["YT"].Player("player", {
-        events: {
-          onStateChange: this.onPlayerStateChange.bind(this),
-          // onError: this.onPlayerError.bind(this),
-          onReady: e => {
-            console.log("ready");
-          }
-        }
+      console.log("setting true");
+      this.setState({
+        youtubeApiLoaded: true
       });
     };
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      console.log("changing video");
+      this.setState({
+        currentVideo: "https://www.youtube.com/embed/8367ETnagHo",
+        autoPlayVideo: true
+      });
+    }, 10000);
   }
 
   startSearching = searchText => {
@@ -43,12 +51,16 @@ class App extends React.Component {
   };
 
   render() {
-    const { currentVideo } = this.state;
+    const { currentVideo, youtubeApiLoaded, autoPlayVideo } = this.state;
     return (
       <div>
         <MuiThemeProvider>
           <SearchBar onSearchInitiated={this.startSearching} />
-          <Player source={currentVideo} />
+          <Player
+            source={currentVideo}
+            youtubeApiLoaded={youtubeApiLoaded}
+            autoPlayVideo={autoPlayVideo}
+          />
         </MuiThemeProvider>
       </div>
     );
@@ -59,14 +71,6 @@ class App extends React.Component {
     tag.src = "https://www.youtube.com/iframe_api";
     tag.async = 1;
     document.head.appendChild(tag);
-  }
-
-  onPlayerStateChange(event) {
-    console.log(event);
-    if (event.data === window["YT"].PlayerState.ENDED) {
-      console.log("ended ");
-      this.player.playVideo();
-    }
   }
 }
 
