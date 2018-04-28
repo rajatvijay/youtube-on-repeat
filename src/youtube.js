@@ -30,8 +30,6 @@ export function searchVideos(searchText) {
     part: "snippet"
   });
 
-  searchAPILogger.log("youtube: calling search API");
-  request.execute(function(response) {
-    searchAPILogger.log(response);
-  });
+  searchAPILogger.log("passing request to the container".toUpperCase());
+  return request;
 }

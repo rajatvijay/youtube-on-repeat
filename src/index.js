@@ -2,6 +2,7 @@ import React from "react";
 import { render } from "react-dom";
 import SearchBar from "./components/searchBar";
 import Player from "./components/player";
+import SearchResults from "./components/searchResults";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import {
   initializeSearchAPI,
@@ -52,24 +53,13 @@ class App extends React.Component {
     };
   }
 
-  componentDidMount() {
-    setTimeout(() => {
-      iframeAPILogger.log("changing video".toUpperCase());
-      iframeAPILogger.log(
-        `old video was playing ${this.currentVideoPlaying}`.toUpperCase()
-      );
-      this.setState({
-        currentVideo: "https://www.youtube.com/embed/8367ETnagHo",
-        autoPlayVideo: this.currentVideoPlaying
-      });
-    }, 10000);
-  }
-
   startSearching = searchText => {
     searchAPILogger.log(searchText);
-    const videos = searchVideos(searchText);
-    this.setState({
-      lastSearchResult: videos
+    searchVideos(searchText).execute(response => {
+      const videos = response.items;
+      this.setState({
+        lastSearchResult: videos
+      });
     });
   };
 
@@ -77,12 +67,20 @@ class App extends React.Component {
     this.currentVideoPlaying = true;
   };
 
+  updateCurrentVideo = videoId => {
+    const videoURL = `https://www.youtube.com/embed/${videoId}`;
+    this.setState({
+      currentVideo: videoURL
+    });
+  };
+
   render() {
     const {
       currentVideo,
       youtubeApiLoaded,
       autoPlayVideo,
-      disableSearchBar
+      disableSearchBar,
+      lastSearchResult
     } = this.state;
     return (
       <div>
@@ -96,6 +94,10 @@ class App extends React.Component {
             youtubeApiLoaded={youtubeApiLoaded}
             autoPlayVideo={autoPlayVideo}
             onVideoPlayed={this.onVideoPlayed}
+          />
+          <SearchResults
+            results={lastSearchResult}
+            updateCurrentVideo={this.updateCurrentVideo}
           />
         </MuiThemeProvider>
       </div>
