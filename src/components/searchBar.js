@@ -26,6 +26,7 @@ class SearchBar extends React.Component {
 
     return (
       <TextField
+        disabled={this.props.disabled}
         onKeyPress={this.handleKeyPress}
         hintText={searchHintText}
         onChange={this.handleOnChange}

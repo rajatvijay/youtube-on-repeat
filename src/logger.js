@@ -16,19 +16,20 @@ function createNameSpace(nameSpace) {
 
 function changeNameSpaceState(nameSpace, state) {
   let turnOnNameSpace = state === "on";
-  nameSpaces[nameSpace.name] = turnOnNameSpace;
+  nameSpaces[nameSpace] = turnOnNameSpace;
 }
 
 function log(nameSpace, ...content) {
-  if (nameSpaces[nameSpace.name]) {
+  if (nameSpaces[nameSpace]) {
     console.log(...content);
   }
 }
 
-const iframeAPILogger = createNameSpace("ifram api");
+const iframeAPILogger = createNameSpace("iframe api");
 iframeAPILogger.changeNameSpaceState("off");
 
 const searchAPILogger = createNameSpace("search api");
+searchAPILogger.changeNameSpaceState("on");
 
 export default {
   iframeAPILogger,
