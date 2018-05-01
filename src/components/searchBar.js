@@ -1,5 +1,14 @@
 import React from "react";
 import TextField from "material-ui/TextField";
+import { css } from "emotion";
+
+const SearchBarClass = css`
+  width: 720px !important;
+  margin: auto;
+  display: block !important;
+  margin-bottom: 8px;
+  border-radius: 3px;
+`;
 
 class SearchBar extends React.Component {
   constructor(props) {
@@ -26,6 +35,7 @@ class SearchBar extends React.Component {
 
     return (
       <TextField
+        className={SearchBarClass}
         disabled={this.props.disabled}
         onKeyPress={this.handleKeyPress}
         hintText={searchHintText}

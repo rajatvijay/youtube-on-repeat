@@ -1,5 +1,13 @@
 import React from "react";
 import logger from "../logger";
+import { css } from "emotion";
+
+const PlayerClass = css`
+  display: block;
+  width: 720px;
+  height: 360px;
+  margin: auto;
+`;
 
 const { iframeAPILogger } = logger;
 
@@ -30,7 +38,7 @@ class Player extends React.Component {
     try {
       // ! Point of failure
       player.playVideo();
-    } catch(e) {
+    } catch (e) {
       iframeAPILogger.log(e);
     }
   }
@@ -59,6 +67,7 @@ class Player extends React.Component {
   render() {
     return (
       <iframe
+        className={PlayerClass}
         title="player"
         width="560"
         height="315"

@@ -4,6 +4,8 @@ import SearchBar from "./components/searchBar";
 import Player from "./components/player";
 import SearchResults from "./components/searchResults";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import { Card } from "material-ui/Card";
+
 import {
   initializeSearchAPI,
   initializeIframAPI,
@@ -11,6 +13,34 @@ import {
   OAUTH2_CLIENT_ID
 } from "./youtube";
 import logger from "./logger";
+import { css } from "emotion";
+
+const CardClass = css`
+  padding: 2% 0 8px 0;
+  width: 740px;
+  margin: auto;
+  margin-top: 8px;
+`;
+
+const titleClass = css`
+  text-align: center;
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 400;
+  display: inline-block;
+  background: #f92672;
+  padding: 5px 15px;
+  text-transform: uppercase;
+  font-size: 42px;
+`;
+
+const ContainerClass = css`
+  background-color: #21232d;
+`;
+
+const HeadingContainer = css`
+  width: 100%;
+  text-align: center;
+`;
 
 const DEFAULT_VIDEO = "https://www.youtube.com/embed/YuXLN23ZGQo";
 
@@ -78,27 +108,35 @@ class App extends React.Component {
     const {
       currentVideo,
       youtubeApiLoaded,
-      // autoPlayVideo,
       disableSearchBar,
       lastSearchResult
     } = this.state;
     return (
-      <div>
+      <div className={ContainerClass}>
         <MuiThemeProvider>
-          <SearchBar
-            disabled={disableSearchBar}
-            onSearchInitiated={this.startSearching}
-          />
-          <Player
-            source={currentVideo}
-            youtubeApiLoaded={youtubeApiLoaded}
-            autoPlayVideo={this.currentVideoPlaying}
-            onVideoPlayed={this.onVideoPlayed}
-          />
-          <SearchResults
-            results={lastSearchResult}
-            updateCurrentVideo={this.updateCurrentVideo}
-          />
+          <div className={HeadingContainer}>
+            <h1 className={titleClass}>Listen On Repeat</h1>
+          </div>
+          <Card className={CardClass}>
+            <SearchBar
+              disabled={disableSearchBar}
+              onSearchInitiated={this.startSearching}
+            />
+            <Player
+              source={currentVideo}
+              youtubeApiLoaded={youtubeApiLoaded}
+              autoPlayVideo={this.currentVideoPlaying}
+              onVideoPlayed={this.onVideoPlayed}
+            />
+          </Card>
+          {lastSearchResult.length > 0 && (
+            <Card className={CardClass}>
+              <SearchResults
+                results={lastSearchResult}
+                updateCurrentVideo={this.updateCurrentVideo}
+              />
+            </Card>
+          )}
         </MuiThemeProvider>
       </div>
     );
