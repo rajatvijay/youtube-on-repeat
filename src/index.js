@@ -28,7 +28,7 @@ class App extends React.Component {
       lastSearchResult: [],
       currentVideo: DEFAULT_VIDEO,
       youtubeApiLoaded: false,
-      autoPlayVideo: false,
+      // autoPlayVideo: false,
       disableSearchBar: true
     };
 
@@ -78,7 +78,7 @@ class App extends React.Component {
     const {
       currentVideo,
       youtubeApiLoaded,
-      autoPlayVideo,
+      // autoPlayVideo,
       disableSearchBar,
       lastSearchResult
     } = this.state;
@@ -92,7 +92,7 @@ class App extends React.Component {
           <Player
             source={currentVideo}
             youtubeApiLoaded={youtubeApiLoaded}
-            autoPlayVideo={autoPlayVideo}
+            autoPlayVideo={this.currentVideoPlaying}
             onVideoPlayed={this.onVideoPlayed}
           />
           <SearchResults

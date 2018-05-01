@@ -19,9 +19,15 @@ class Player extends React.Component {
               iframeAPILogger.log("player ready for events".toUpperCase());
               if (this.props.autoPlayVideo) {
                 iframeAPILogger.log(
-                  "previous video was playing so playing this video also".toUpperCase()
+                  "previous video was playing so playing this video also".toUpperCase(),
+                  this.player
                 );
-                this.player.playVideo();
+
+                // Putting a timeout to let the youtube API load
+                // and create the playVideo function in the player instance
+                setTimeout(() => {
+                  this.player.playVideo();
+                }, 500);
               }
             }
           }
@@ -58,9 +64,11 @@ class Player extends React.Component {
     if (event.data === window["YT"].PlayerState.ENDED) {
       iframeAPILogger.log("video ended re-playing".toUpperCase());
       // console.log(this.player);
-      this.player.playVideo();
+      setTimeout(() => {
+        this.player.playVideo();
+      }, 500);
     } else if (event.data === window["YT"].PlayerState.PLAYING) {
-      iframeAPILogger.log("playing the current vide".toUpperCase());
+      iframeAPILogger.log("playing the current video".toUpperCase());
       this.props.onVideoPlayed();
     }
   }

@@ -26,10 +26,10 @@ function log(nameSpace, ...content) {
 }
 
 const iframeAPILogger = createNameSpace("iframe api");
-iframeAPILogger.changeNameSpaceState("off");
+iframeAPILogger.changeNameSpaceState("on");
 
 const searchAPILogger = createNameSpace("search api");
-searchAPILogger.changeNameSpaceState("on");
+searchAPILogger.changeNameSpaceState("off");
 
 export default {
   iframeAPILogger,
