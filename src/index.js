@@ -1,7 +1,6 @@
 import React from 'react';
 import {render} from 'react-dom';
 import SearchBar from './components/searchBar';
-// import Player from './components/player';
 import SearchResults from './components/searchResults';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {Card} from 'material-ui/Card';
