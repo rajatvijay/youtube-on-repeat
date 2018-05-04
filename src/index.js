@@ -1,19 +1,20 @@
-import React from "react";
-import { render } from "react-dom";
-import SearchBar from "./components/searchBar";
-import Player from "./components/player";
-import SearchResults from "./components/searchResults";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import { Card } from "material-ui/Card";
+import React from 'react';
+import {render} from 'react-dom';
+import SearchBar from './components/searchBar';
+// import Player from './components/player';
+import SearchResults from './components/searchResults';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import {Card} from 'material-ui/Card';
+import YRPlayer from 'youtube-repeat-player';
 
 import {
   initializeSearchAPI,
   initializeIframAPI,
   searchVideos,
-  OAUTH2_CLIENT_ID
-} from "./youtube";
-import logger from "./logger";
-import { css } from "emotion";
+  OAUTH2_CLIENT_ID,
+} from './youtube';
+import logger from './logger';
+import {css} from 'emotion';
 
 const CardClass = css`
   padding: 2% 0 8px 0;
@@ -24,7 +25,7 @@ const CardClass = css`
 
 const titleClass = css`
   text-align: center;
-  font-family: "Ubuntu", sans-serif;
+  font-family: 'Ubuntu', sans-serif;
   font-weight: 400;
   display: inline-block;
   background: #f92672;
@@ -42,10 +43,18 @@ const HeadingContainer = css`
   text-align: center;
 `;
 
-const DEFAULT_VIDEO = "https://www.youtube.com/embed/YuXLN23ZGQo";
+const PlayerClass = css`
+  display: block;
+  width: 720px;
+  height: 360px;
+  margin: auto;
+`;
+console.log(PlayerClass);
+
+const DEFAULT_VIDEO = 'https://www.youtube.com/embed/YuXLN23ZGQo';
 
 // Logger
-const { iframeAPILogger, searchAPILogger } = logger;
+const {iframeAPILogger, searchAPILogger} = logger;
 
 class App extends React.Component {
   constructor(props) {
@@ -59,25 +68,25 @@ class App extends React.Component {
       currentVideo: DEFAULT_VIDEO,
       youtubeApiLoaded: false,
       // autoPlayVideo: false,
-      disableSearchBar: true
+      disableSearchBar: true,
     };
 
-    iframeAPILogger.log("creating on ready fun for iframe API".toUpperCase());
-    window["onYouTubeIframeAPIReady"] = e => {
-      iframeAPILogger.log("iframe API loaded, setting it true".toUpperCase());
+    iframeAPILogger.log('creating on ready fun for iframe API'.toUpperCase());
+    window['onYouTubeIframeAPIReady'] = e => {
+      iframeAPILogger.log('iframe API loaded, setting it true'.toUpperCase());
       this.setState({
-        youtubeApiLoaded: true
+        youtubeApiLoaded: true,
       });
     };
 
-    searchAPILogger.log("creating on ready fun for search API".toUpperCase());
-    window["onClientLoad"] = () => {
-      searchAPILogger.log("first search api loaded".toUpperCase());
-      window["gapi"].client.load("youtube", "v3", () => {
-        searchAPILogger.log("setting client api key".toUpperCase());
-        window["gapi"].client.setApiKey(OAUTH2_CLIENT_ID);
+    searchAPILogger.log('creating on ready fun for search API'.toUpperCase());
+    window['onClientLoad'] = () => {
+      searchAPILogger.log('first search api loaded'.toUpperCase());
+      window['gapi'].client.load('youtube', 'v3', () => {
+        searchAPILogger.log('setting client api key'.toUpperCase());
+        window['gapi'].client.setApiKey(OAUTH2_CLIENT_ID);
         this.setState({
-          disableSearchBar: false
+          disableSearchBar: false,
         });
       });
     };
@@ -88,7 +97,7 @@ class App extends React.Component {
     searchVideos(searchText).execute(response => {
       const videos = response.items;
       this.setState({
-        lastSearchResult: videos
+        lastSearchResult: videos,
       });
     });
   };
@@ -100,7 +109,7 @@ class App extends React.Component {
   updateCurrentVideo = videoId => {
     const videoURL = `https://www.youtube.com/embed/${videoId}`;
     this.setState({
-      currentVideo: videoURL
+      currentVideo: videoURL,
     });
   };
 
@@ -109,7 +118,7 @@ class App extends React.Component {
       currentVideo,
       youtubeApiLoaded,
       disableSearchBar,
-      lastSearchResult
+      lastSearchResult,
     } = this.state;
     return (
       <div className={ContainerClass}>
@@ -122,7 +131,8 @@ class App extends React.Component {
               disabled={disableSearchBar}
               onSearchInitiated={this.startSearching}
             />
-            <Player
+            <YRPlayer
+              className={PlayerClass}
               source={currentVideo}
               youtubeApiLoaded={youtubeApiLoaded}
               autoPlayVideo={this.currentVideoPlaying}
@@ -143,4 +153,4 @@ class App extends React.Component {
   }
 }
 
-render(<App />, document.getElementById("root"));
+render(<App />, document.getElementById('root'));
