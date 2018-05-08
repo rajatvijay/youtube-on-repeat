@@ -50,7 +50,7 @@ const PlayerClass = css`
 `;
 console.log(PlayerClass);
 
-const DEFAULT_VIDEO = 'https://www.youtube.com/embed/YuXLN23ZGQo';
+const DEFAULT_VIDEO = 'YuXLN23ZGQo';
 
 // Logger
 const {iframeAPILogger, searchAPILogger} = logger;
@@ -106,9 +106,8 @@ class App extends React.Component {
   };
 
   updateCurrentVideo = videoId => {
-    const videoURL = `https://www.youtube.com/embed/${videoId}`;
     this.setState({
-      currentVideo: videoURL,
+      currentVideo: videoId,
     });
   };
 
@@ -132,7 +131,7 @@ class App extends React.Component {
             />
             <YRPlayer
               className={PlayerClass}
-              source={currentVideo}
+              videoId={currentVideo}
               youtubeApiLoaded={youtubeApiLoaded}
               autoPlayVideo={this.currentVideoPlaying}
               onVideoPlayed={this.onVideoPlayed}

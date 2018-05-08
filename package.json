@@ -1,7 +1,8 @@
 {
   "name": "listen-on-repeat",
   "version": "1.0.0",
-  "description": "Single page app to listen music from youtube made using react",
+  "description":
+    "Single page app to listen music from youtube made using react",
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
@@ -10,7 +11,7 @@
     "react": "16.3.2",
     "react-dom": "16.3.2",
     "react-scripts": "1.1.4",
-    "youtube-repeat-player": "^1.0.0"
+    "youtube-repeat-player": "^2.0.0"
   },
   "devDependencies": {},
   "scripts": {
